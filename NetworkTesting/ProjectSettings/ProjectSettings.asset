@@ -598,11 +598,12 @@ PlayerSettings:
     Collab: 0
     ErrorHub: 0
     Hub: 0
+    UNet: 1
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 2
-  cloudProjectId: 
-  projectName: 
-  organizationId: 
+  cloudProjectId: da5013c0-caae-4e18-9fde-885f0a83f7ae
+  projectName: NetworkTesting (4)
+  organizationId: grizzlyteddy
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
