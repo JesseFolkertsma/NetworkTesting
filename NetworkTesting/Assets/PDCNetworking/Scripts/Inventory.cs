@@ -17,11 +17,7 @@ public class Inventory : MonoBehaviour {
         invManager = this;
         content = FindObjectOfType<Canvas>().transform.GetChild(0);
     }
-    private void Update(){
-        if (Input.GetButtonDown("Jump")){
-            Add(new Item("Hary", 10));
-        }
-    }
+
     public void Add(Item item){
         inventory.Add(item);
         iLHelper n;

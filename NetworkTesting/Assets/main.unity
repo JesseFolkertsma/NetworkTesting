@@ -150,6 +150,11 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 90d8e09703679534295bd2cacb73d6de, type: 2}
   m_IsPrefabParent: 0
+--- !u!224 &435860506 stripped
+RectTransform:
+  m_PrefabParentObject: {fileID: 224881552356280670, guid: efda69e4aff5dca448071aa9de81a2ef,
+    type: 2}
+  m_PrefabInternal: {fileID: 973564948}
 --- !u!1001 &564600419
 Prefab:
   m_ObjectHideFlags: 0
@@ -487,11 +492,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 114718006036000558, guid: efda69e4aff5dca448071aa9de81a2ef,
-        type: 2}
-      propertyPath: inventoryListings.Array.size
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 224251754849178788, guid: efda69e4aff5dca448071aa9de81a2ef,
         type: 2}
       propertyPath: m_LocalPosition.x
@@ -580,11 +580,6 @@ Prefab:
     - target: {fileID: 224251754849178788, guid: efda69e4aff5dca448071aa9de81a2ef,
         type: 2}
       propertyPath: m_Pivot.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114066733630598922, guid: efda69e4aff5dca448071aa9de81a2ef,
-        type: 2}
-      propertyPath: m_UiScaleMode
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -881,10 +876,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 1009196950182780, guid: 0085af4a580137d48813c66bc45354e9, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
+    - target: {fileID: 114460470535258938, guid: 0085af4a580137d48813c66bc45354e9,
+        type: 2}
+      propertyPath: content
+      value: 
+      objectReference: {fileID: 435860506}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0085af4a580137d48813c66bc45354e9, type: 2}
   m_IsPrefabParent: 0
