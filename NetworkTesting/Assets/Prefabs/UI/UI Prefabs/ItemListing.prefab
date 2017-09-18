@@ -210,6 +210,7 @@ MonoBehaviour:
   valueField: {fileID: 0}
   nameId: 0
   dropId: 2
+  tradeId: 3
   valueFId: 4
   valueId: 1
   listIndex: 0
