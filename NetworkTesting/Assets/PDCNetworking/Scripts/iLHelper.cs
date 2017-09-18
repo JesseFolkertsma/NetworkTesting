@@ -8,11 +8,14 @@ public class iLHelper : MonoBehaviour
 {
     Text name;
     Button drop;
+    Button trade;
     Text value;
+
     public InputField valueField;
 
     public int nameId;
     public int dropId;
+    public int tradeId;
     public int valueFId;
     public int valueId;
 
@@ -21,6 +24,7 @@ public class iLHelper : MonoBehaviour
     {
         name = transform.GetChild(nameId).GetComponent<Text>();
         drop = transform.GetChild(dropId).GetComponent<Button>();
+        trade = transform.GetChild(tradeId).GetComponent<Button>();
         value = transform.GetChild(valueId).GetComponent<Text>();
         valueField = transform.GetChild(valueFId).GetComponent<InputField>();
     }
@@ -30,6 +34,7 @@ public class iLHelper : MonoBehaviour
         name.text = item.name;
         value.text = item.value.ToString();
         drop.onClick.AddListener(() => Inventory.invManager.Drop(index));
+        trade.onClick.AddListener(() => Inventory.invManager.Trade(index));
         valueField.onEndEdit.AddListener(delegate { Inventory.invManager.ChangeValue(index); });
     }
     public void Renumber(int i)

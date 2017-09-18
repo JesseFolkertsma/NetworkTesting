@@ -15,6 +15,7 @@ public class Inventory : MonoBehaviour {
 
     private void Awake(){
         invManager = this;
+        content = FindObjectOfType<Canvas>().transform.GetChild(0);
     }
     private void Update(){
         if (Input.GetButtonDown("Jump")){
@@ -38,6 +39,9 @@ public class Inventory : MonoBehaviour {
         Refresh(n);
         //Delete item in UI
 
+    }
+    public void Trade(int i){
+        print("Trading item index " +  i);
     }
     public void Refresh(int i){
         for(;i < inventoryListings.Count; i++){
