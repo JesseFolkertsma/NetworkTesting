@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System;
 
-public class Inventory : MonoBehaviour {
+public class Inventory : NetworkBehaviour {
     public List<Item> inventory = new List<Item>();
     public List<iLHelper> inventoryListings = new List<iLHelper>();
 
