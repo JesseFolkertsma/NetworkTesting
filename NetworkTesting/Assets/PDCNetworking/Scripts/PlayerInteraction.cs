@@ -37,14 +37,24 @@ public class PlayerInteraction : NetworkBehaviour {
 
     void Interact()
     {
+        Debug.Log("i will try to interact");
         RaycastHit hit;
         if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, interactRange))
         {
-            if(hit.transform.tag == "Button")
+            Debug.Log("i hit " + hit.transform.name +" with tag: " + hit.transform.name);
+            if (hit.transform.tag == "Button")
             {
-                hit.transform.GetComponent<SpawnButton>().CmdSpawn();
+                b = hit.transform.GetComponent<SpawnButton>();
+                CmdPushButton();
             }
         }
+    }
+
+    SpawnButton b;
+    [Command]
+    void CmdPushButton()
+    {
+        b.Spawn();
     }
 
     [Command]

@@ -6,10 +6,10 @@ using UnityEngine.Networking;
 public class SpawnButton : NetworkBehaviour {
     public GameObject objectToSpawn;
     public Transform spawnPosition;
-
-    [Command]
-    public void CmdSpawn()
+    
+    public void Spawn()
     {
+        Debug.Log("I am ze button and i am pressed c:");
         GameObject go = (GameObject)Instantiate(objectToSpawn, spawnPosition.position, spawnPosition.rotation);
         NetworkServer.Spawn(go);
     }
