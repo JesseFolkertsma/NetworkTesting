@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using System;
 
 public class Inventory : MonoBehaviour {
@@ -12,6 +13,9 @@ public class Inventory : MonoBehaviour {
     public GameObject iL;
 
     bool invActive = false;
+
+    float tradeRadius;
+    Trade currentTrade;
 
     private void Awake(){
         content = FindObjectOfType<Canvas>().transform.GetChild(0);
@@ -44,7 +48,42 @@ public class Inventory : MonoBehaviour {
 
     }
     public void Trade(int i){
-        print("Trading item index " +  i);
+
+        Collider[] n = Physics.OverlapSphere(transform.position, tradeRadius, LayerMask.NameToLayer("RemotePlayer"));
+        if (n.Length < 0)
+        {
+            Inventory[] nl = new Inventory[n.Length];
+            for (int ii = 0; ii < n.Length; ii++){
+                nl[ii] = n[ii].transform.GetComponent<Inventory>();
+            }
+            Trade newTrade = new Trade(inventory[i], this, nl);
+            currentTrade = newTrade;
+            CmdTrade(gameObject.name, currentTrade.item.name, currentTrade.item.value);
+        }
+        else
+        {
+            print("No frendz to trad hary with");
+        }
+
+    }
+    public void AcceptTrade() { 
+
+    }
+    public void DeclineTrade()
+    {
+
+    }
+    [Command]
+    public void CmdTrade(string PlayerID, string name, int value){
+        foreach(KeyValuePair<string, Inventory> n in currentTrade.receivers)
+        {
+            n.Value.RpcReceiveTrade(currentTrade.item);
+
+        }
+    }
+    [ClientRpc]
+    public void RpcReceiveTrade(Item item){
+        print("Ohboi waddup its hary");
     }
     public void Refresh(int i){
         for(;i < inventoryListings.Count; i++){
