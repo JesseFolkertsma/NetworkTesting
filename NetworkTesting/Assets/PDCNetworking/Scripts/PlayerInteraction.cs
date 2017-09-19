@@ -42,7 +42,7 @@ public class PlayerInteraction : NetworkBehaviour {
         {
             if(hit.transform.tag == "Button")
             {
-                hit.transform.GetComponent<SpawnButton>().Spawn();
+                hit.transform.GetComponent<SpawnButton>().CmdSpawn();
             }
         }
     }
