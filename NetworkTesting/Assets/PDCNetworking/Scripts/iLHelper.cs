@@ -28,26 +28,26 @@ public class iLHelper : MonoBehaviour
         value = transform.GetChild(valueId).GetComponent<Text>();
         valueField = transform.GetChild(valueFId).GetComponent<InputField>();
     }
-    public void Fill(Item item, int index)
+    public void Fill(Inventory inv, Item item, int index)
     {
         listIndex = index;
         name.text = item.name;
         value.text = item.value.ToString();
-        drop.onClick.AddListener(() => Inventory.invManager.Drop(index));
-        trade.onClick.AddListener(() => Inventory.invManager.Trade(index));
-        valueField.onEndEdit.AddListener(delegate { Inventory.invManager.ChangeValue(index); });
+        drop.onClick.AddListener(() => inv.Drop(index));
+        trade.onClick.AddListener(() => inv.Trade(index));
+        valueField.onEndEdit.AddListener(delegate { inv.ChangeValue(index); });
     }
-    public void Renumber(int i)
+    public void Renumber(Inventory inv, int i)
     {
         listIndex = i;
         valueField.onEndEdit.RemoveAllListeners();
-        valueField.onEndEdit.AddListener(delegate { Inventory.invManager.ChangeValue(listIndex); });
+        valueField.onEndEdit.AddListener(delegate { inv.ChangeValue(listIndex); });
         drop.onClick.RemoveAllListeners();
-        drop.onClick.AddListener(() => Inventory.invManager.Drop(listIndex));
+        drop.onClick.AddListener(() => inv.Drop(listIndex));
     }
-    public void Refresh()
+    public void Refresh(Inventory inv)
     {
-        valueId = Inventory.invManager.inventory[listIndex].value;
+        valueId = inv.inventory[listIndex].value;
         value.text = valueId.ToString();
 
     }
