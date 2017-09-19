@@ -19,6 +19,10 @@ public class PlayerInteraction : NetworkBehaviour {
         {
             Push();
         }
+        if (Input.GetButtonDown("Interact"))
+        {
+            Interact();
+        }
     }
 
     void Push()
@@ -28,6 +32,18 @@ public class PlayerInteraction : NetworkBehaviour {
         if(Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, interactRange, remoteplayerLayer))
         {
             CmdPushPlayer(hit.transform.name);
+        }
+    }
+
+    void Interact()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, interactRange))
+        {
+            if(hit.transform.tag == "Button")
+            {
+                hit.transform.GetComponent<SpawnButton>().Spawn();
+            }
         }
     }
 

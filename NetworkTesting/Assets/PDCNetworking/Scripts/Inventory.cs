@@ -4,8 +4,6 @@ using UnityEngine;
 using System;
 
 public class Inventory : MonoBehaviour {
-    public static Inventory invManager;
-
     public List<Item> inventory = new List<Item>();
     public List<iLHelper> inventoryListings = new List<iLHelper>();
 
@@ -13,17 +11,26 @@ public class Inventory : MonoBehaviour {
 
     public GameObject iL;
 
+    bool invActive = false;
+
     private void Awake(){
-        invManager = this;
         content = FindObjectOfType<Canvas>().transform.GetChild(0);
+    }
+
+    private void Update()
+    {
+        if (Input.GetButtonDown("Inventory"))
+        {
+            invActive = !invActive;
+            content.gameObject.SetActive(invActive);
+        }
     }
 
     public void Add(Item item){
         inventory.Add(item);
-        iLHelper n;
-        n = Instantiate(iL, Vector3.zero, Quaternion.identity).GetComponent<iLHelper>();
+        iLHelper n = Instantiate(iL, Vector3.zero, Quaternion.identity).GetComponent<iLHelper>();
         n.transform.parent = content;
-        n.Fill(item, inventory.Count - 1);
+        n.Fill(this, item, inventory.Count - 1);
         inventoryListings.Add(n);
         //Add item in UI
     }
@@ -41,12 +48,12 @@ public class Inventory : MonoBehaviour {
     }
     public void Refresh(int i){
         for(;i < inventoryListings.Count; i++){
-            inventoryListings[i].Renumber(i);
+            inventoryListings[i].Renumber(this, i);
         }
     }
     public void ChangeValue(int i){
         print(i);
         inventory[i].value = Int32.Parse(inventoryListings[i].valueField.text);
-        inventoryListings[i].Refresh();
+        inventoryListings[i].Refresh(this);
     }
 }
