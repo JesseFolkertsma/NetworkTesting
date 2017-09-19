@@ -7,7 +7,8 @@ public class SpawnButton : NetworkBehaviour {
     public GameObject objectToSpawn;
     public Transform spawnPosition;
     
-    public void Spawn()
+    [Command]
+    public void CmdSpawn()
     {
         Debug.Log("I am ze button and i am pressed c:");
         GameObject go = (GameObject)Instantiate(objectToSpawn, spawnPosition.position, spawnPosition.rotation);
