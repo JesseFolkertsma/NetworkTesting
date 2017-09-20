@@ -14,7 +14,7 @@ public class Inventory : NetworkBehaviour {
 
     bool invActive = false;
 
-    float tradeRadius;
+    public float tradeRadius;
     Trade currentTrade;
 
     private void Awake(){
@@ -48,15 +48,21 @@ public class Inventory : NetworkBehaviour {
 
     }
     public void Trade(int i){
-
-        Collider[] n = Physics.OverlapSphere(transform.position, tradeRadius, LayerMask.NameToLayer("RemotePlayer"));
-        if (n.Length < 0)
+        Debug.Log("Looking for tradey friendz");
+        Collider[] n = Physics.OverlapSphere(transform.position, 1000);
+        List<Inventory> remotePlayerList = new List<Inventory>();
+        Debug.Log(n.Length + " is my amount of maybe frendz");
+        foreach(Collider nn in n)
         {
-            Inventory[] nl = new Inventory[n.Length];
-            for (int ii = 0; ii < n.Length; ii++){
-                nl[ii] = n[ii].transform.GetComponent<Inventory>();
+            if(nn.transform.root.tag == "Player" && nn.transform.root != transform)
+            {
+                Debug.Log("Added frend : " + nn.transform.root.name);
+                remotePlayerList.Add(nn.transform.root.GetComponent<Inventory>());
             }
-            Trade newTrade = new Trade(inventory[i], this, nl);
+        }
+        if (remotePlayerList.Count > 0)
+        {
+            Trade newTrade = new Trade(inventory[i], this, remotePlayerList.ToArray());
             currentTrade = newTrade;
             CmdTrade(gameObject.name, currentTrade.item.name, currentTrade.item.value);
         }
@@ -78,12 +84,11 @@ public class Inventory : NetworkBehaviour {
         foreach(KeyValuePair<string, Inventory> n in currentTrade.receivers)
         {
             n.Value.RpcReceiveTrade();
-
         }
     }
     [ClientRpc]
     public void RpcReceiveTrade(){
-        print("Ohboi waddup its hary");
+        Debug.Log("Ohboi waddup its hary");
     }
     public void Refresh(int i){
         for(;i < inventoryListings.Count; i++){

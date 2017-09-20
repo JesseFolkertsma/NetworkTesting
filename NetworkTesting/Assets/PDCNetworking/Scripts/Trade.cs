@@ -9,6 +9,7 @@ public class Trade {
     public Trade(Item _item, Inventory _seller, Inventory[] _receivers){
         item = _item;
         seller = _seller;
+        receivers = new Dictionary<string, Inventory>();
         foreach(Inventory i in _receivers)
         {
             receivers.Add(i.gameObject.name, i);
