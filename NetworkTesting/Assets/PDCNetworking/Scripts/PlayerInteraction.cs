@@ -27,7 +27,6 @@ public class PlayerInteraction : NetworkBehaviour {
 
     void Push()
     {
-        Debug.Log("Push dis nibba");
         RaycastHit hit;
         if(Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, interactRange, remoteplayerLayer))
         {
@@ -37,15 +36,16 @@ public class PlayerInteraction : NetworkBehaviour {
 
     void Interact()
     {
-        Debug.Log("i will try to interact");
         RaycastHit hit;
         if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, interactRange))
         {
-            Debug.Log("i hit " + hit.transform.name +" with tag: " + hit.transform.name);
             if (hit.transform.tag == "Button")
             {
-                hit.transform.GetComponent<NetworkIdentity>().AssignClientAuthority(GetComponent<NetworkIdentity>().connectionToClient);
+                Debug.Log("hit bytton");
+                hit.transform.GetComponent<AuthorityHandler>().SetAuth(GetComponent<NetworkIdentity>(), hit.transform.GetComponent<NetworkIdentity>());
+                Debug.Log("hit autsetter");
                 hit.transform.GetComponent<SpawnButton>().CmdSpawn();
+                Debug.Log("hit spawn");
             }
         }
     }

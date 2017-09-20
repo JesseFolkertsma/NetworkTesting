@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 23945517043115458}
   - component: {fileID: 114660244964694664}
   - component: {fileID: 114810421986518766}
+  - component: {fileID: 114516899198169832}
   m_Layer: 0
   m_Name: SpawnButton
   m_TagString: Button
@@ -124,6 +125,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114516899198169832
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1176707379842308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e6f525aa5e2c8c4b8b70f5050b3b7f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114660244964694664
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -155,7 +167,7 @@ MonoBehaviour:
     i14: 132
     i15: 226
   m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
+  m_LocalPlayerAuthority: 1
 --- !u!114 &114810421986518766
 MonoBehaviour:
   m_ObjectHideFlags: 1
