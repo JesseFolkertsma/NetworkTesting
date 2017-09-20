@@ -44,7 +44,7 @@ public class PlayerInteraction : NetworkBehaviour {
             Debug.Log("i hit " + hit.transform.name +" with tag: " + hit.transform.name);
             if (hit.transform.tag == "Button")
             {
-                hit.transform.GetComponent<NetworkIdentity>().AssignClientAuthority(GetComponent<NetworkIdentity>().connectionToServer);
+                hit.transform.GetComponent<NetworkIdentity>().AssignClientAuthority(GetComponent<NetworkIdentity>().connectionToClient);
                 hit.transform.GetComponent<SpawnButton>().CmdSpawn();
             }
         }

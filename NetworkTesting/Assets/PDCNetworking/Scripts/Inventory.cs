@@ -77,12 +77,12 @@ public class Inventory : NetworkBehaviour {
     public void CmdTrade(string PlayerID, string name, int value){
         foreach(KeyValuePair<string, Inventory> n in currentTrade.receivers)
         {
-            n.Value.RpcReceiveTrade(currentTrade.item);
+            n.Value.RpcReceiveTrade();
 
         }
     }
     [ClientRpc]
-    public void RpcReceiveTrade(Item item){
+    public void RpcReceiveTrade(){
         print("Ohboi waddup its hary");
     }
     public void Refresh(int i){
