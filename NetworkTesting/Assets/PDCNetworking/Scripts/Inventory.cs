@@ -8,9 +8,11 @@ public class Inventory : NetworkBehaviour {
     public List<Item> inventory = new List<Item>();
     public List<iLHelper> inventoryListings = new List<iLHelper>();
 
+    public GameObject canvas;
     public Transform content;
 
     public GameObject iL;
+    public GameObject newCanvas;
 
     bool invActive = false;
 
@@ -18,7 +20,8 @@ public class Inventory : NetworkBehaviour {
     Trade currentTrade;
 
     private void Awake(){
-        content = FindObjectOfType<Canvas>().transform.GetChild(0);
+        canvas = Instantiate(newCanvas);
+        content = canvas.transform.GetChild(0);
     }
 
     private void Update()
@@ -48,29 +51,93 @@ public class Inventory : NetworkBehaviour {
 
     }
 
-    public void AcceptTrade() { 
+    public void AcceptTrade()
+    { 
 
     }
+
     public void DeclineTrade()
     {
 
     }
 
-    
-    public void Trade(int i)
+    public void SetupTrade(int i)
     {
-        ItemManager.instance.CmdTrade(0, gameObject.name);
+        Debug.Log("Looking for tradey friendz");
+        Collider[] n = Physics.OverlapSphere(transform.position, 1000);
+        List<Inventory> remotePlayerList = new List<Inventory>();
+        Debug.Log(n.Length + " is my amount of maybe frendz");
+        foreach (Collider nn in n)
+        {
+            if (nn.transform.root.tag == "Player" && nn.transform.root != transform)
+            {
+                Debug.Log("Added frend : " + nn.transform.root.name);
+                remotePlayerList.Add(nn.transform.root.GetComponent<Inventory>());
+            }
+        }
+        if (remotePlayerList.Count > 0)
+        {
+            Trade newTrade = new Trade(inventory[i], this, remotePlayerList.ToArray());
+            CmdSetupTrade(newTrade.SerializeForNetwork());
+        }
+        else
+        {
+            print("No frendz to trad hary with");
+        }
     }
 
-    public Item IDToItem(int id)
+    [Command]
+    public void CmdSetupTrade(byte[] trade)
     {
-        return ItemManager.instance.database[id];
+        ItemManager.instance.SendTrade(trade, gameObject.name);
+    }
+
+    #region TestTrades
+    public void EasyTrade(int itemToTrade)
+    {
+        CmdEasyTrade(inventory[itemToTrade]);
+    }
+
+    [Command]
+    public void CmdEasyTrade(Item itemToTrade)
+    {
+        Debug.Log("Looking for tradey friendz");
+        Collider[] n = Physics.OverlapSphere(transform.position, 1000);
+        List<Inventory> remotePlayerList = new List<Inventory>();
+        Debug.Log(n.Length + " is my amount of maybe frendz");
+        foreach (Collider nn in n)
+        {
+            if (nn.transform.root.tag == "Player" && nn.transform.root != transform)
+            {
+                Debug.Log("Added frend : " + nn.transform.root.name);
+                remotePlayerList.Add(nn.transform.root.GetComponent<Inventory>());
+            }
+        }
+        if (remotePlayerList.Count > 0)
+        {
+            foreach (Inventory i in remotePlayerList)
+            {
+                i.RpcEasyRecieve(gameObject.name, itemToTrade);
+            }
+        }
+        else
+        {
+            print("No frendz to trad hary with");
+        }
     }
 
     [ClientRpc]
-    public void RpcReceiveTrade(string sender, int itemID)
+    public void RpcEasyRecieve(string sender, Item itemToTrade)
     {
-        Debug.Log("Hello! iz me " + gameObject.name + "! An i gots a trade frem my fren: " + sender + ", and he wan to gifes me: " + IDToItem(itemID).name);
+        Debug.Log("Hello! iz me " + gameObject.name + "! An i gots a trade frem my fren: " + sender + ", and he wan to gifes me: " + itemToTrade.name + " wit value: " + itemToTrade.value.ToString());
+    }
+    #endregion
+
+    [ClientRpc]
+    public void RpcReceiveTrade(byte[] serIncomingTrade, int tradeID)
+    {
+        Trade trade = Trade.DeserializeFromNetwork(serIncomingTrade);
+        Debug.Log("Hello! iz me " + gameObject.name + "! An i gots a trade frem my fren: " + trade.seller + ", and he wan to gifes me: " + trade.item.name);
     }
 
     public void Refresh(int i){

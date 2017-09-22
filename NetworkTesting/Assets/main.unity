@@ -714,7 +714,7 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1024392561671620, guid: efda69e4aff5dca448071aa9de81a2ef, type: 2}
+    - target: {fileID: 1368299533370914, guid: efda69e4aff5dca448071aa9de81a2ef, type: 2}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}

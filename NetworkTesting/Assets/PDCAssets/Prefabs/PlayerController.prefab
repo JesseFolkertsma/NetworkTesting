@@ -594,8 +594,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventory: []
   inventoryListings: []
+  canvas: {fileID: 0}
   content: {fileID: 0}
   iL: {fileID: 1695374035636770, guid: df0f016e2e9336d4eac2bcbfdb6f1459, type: 2}
+  newCanvas: {fileID: 1368299533370914, guid: efda69e4aff5dca448071aa9de81a2ef, type: 2}
   tradeRadius: 0
 --- !u!114 &114539081937160478
 MonoBehaviour:
