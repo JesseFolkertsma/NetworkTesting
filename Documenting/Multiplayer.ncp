@@ -1,0 +1,146 @@
+<Project>
+  <Name>Multiplayer</Name>
+  <ProjectItem type="NClass.DiagramEditor.ClassDiagram.Diagram" assembly="NClass.DiagramEditor, Version=2.4.1823.0, Culture=neutral, PublicKeyToken=null">
+    <Name>RPS</Name>
+    <Language>CSharp</Language>
+    <Entities>
+      <Entity type="Class">
+        <Name>RPSManager</Name>
+        <Access>Public</Access>
+        <Location left="339" top="161" />
+        <Size width="551" height="391" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">List&lt;RPSMatch&gt; Matches</Member>
+        <Member type="Method">public void RequestRPS(string challengerID, string challengedID)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Comment">
+        <Text>Player 1 wants to play Player 2 by pressing P and looking at Player 2
+
+Player 2 gets a popup asking if he wants to play. During this player 1 gets a waiting for player screen.
+
+Player 2 Accepts and both get to choose what hand they want to play in the RPS menu.
+
+When both players locked their choices in The RPSManager will take both choices and see who wins.
+
+RPS sends winner a message he won and loser a message he lost.
+
+RPS Screen will then close when pressing escape. </Text>
+        <Location left="1197" top="161" />
+        <Size width="221" height="297" />
+      </Entity>
+      <Entity type="Class">
+        <Name>RPSMatch</Name>
+        <Access>Public</Access>
+        <Location left="339" top="605" />
+        <Size width="327" height="305" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">string challenger</Member>
+        <Member type="Field">string challenged</Member>
+        <Member type="Field">RPSOptions choice1</Member>
+        <Member type="Field">RPSOptions choice2</Member>
+        <Member type="Field">bool ready1</Member>
+        <Member type="Field">bool ready2</Member>
+        <Member type="Method">public void Accept(string playerID)</Member>
+        <Member type="Method">public void Decline()</Member>
+        <Member type="Method">void StartRPS()</Member>
+        <Member type="Method">public void Answer()</Member>
+        <Member type="Method">void EndMatch()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Enum">
+        <Name>RPSOptions</Name>
+        <Access>Public</Access>
+        <Location left="727" top="605" />
+        <Size width="162" height="129" />
+        <Collapsed>False</Collapsed>
+        <Value>Empty</Value>
+        <Value>Rock</Value>
+        <Value>Paper</Value>
+        <Value>Scissors</Value>
+      </Entity>
+      <Entity type="Class">
+        <Name>Player</Name>
+        <Access>Public</Access>
+        <Location left="110" top="161" />
+        <Size width="162" height="217" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">public void RequestRPS()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>Player2</Name>
+        <Access>Public</Access>
+        <Location left="957" top="161" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">public void RequestRPS()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>RPSMenu</Name>
+        <Access>Public</Access>
+        <Location left="957" top="383" />
+        <Size width="181" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">int choice</Member>
+        <Member type="Method">public void Result(string playerID)</Member>
+        <Member type="Method">public void Activate()</Member>
+        <Member type="Method">public void Deactivate()</Member>
+        <Member type="Method">public void Request()</Member>
+        <Member type="Method">public void Select(int i)</Member>
+        <Member type="Method">public void LockIn()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>RPSMenu</Name>
+        <Access>Public</Access>
+        <Location left="110" top="383" />
+        <Size width="181" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">int choice</Member>
+        <Member type="Method">public void Result(string playerID)</Member>
+        <Member type="Method">public void Activate()</Member>
+        <Member type="Method">public void Deactivate()</Member>
+        <Member type="Method">public void Request()</Member>
+        <Member type="Method">public void Select(int i)</Member>
+        <Member type="Method">public void LockIn()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+    </Entities>
+    <Relationships>
+      <Relationship type="Association" first="4" second="0">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <Direction>Bidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="0" second="5">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <Direction>Bidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="2" second="3">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="0" second="2">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+    </Relationships>
+  </ProjectItem>
+</Project>
