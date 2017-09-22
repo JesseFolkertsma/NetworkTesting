@@ -47,31 +47,7 @@ public class Inventory : NetworkBehaviour {
         //Delete item in UI
 
     }
-    public void Trade(int i){
-        Debug.Log("Looking for tradey friendz");
-        Collider[] n = Physics.OverlapSphere(transform.position, 1000);
-        List<Inventory> remotePlayerList = new List<Inventory>();
-        Debug.Log(n.Length + " is my amount of maybe frendz");
-        foreach(Collider nn in n)
-        {
-            if(nn.transform.root.tag == "Player" && nn.transform.root != transform)
-            {
-                Debug.Log("Added frend : " + nn.transform.root.name);
-                remotePlayerList.Add(nn.transform.root.GetComponent<Inventory>());
-            }
-        }
-        if (remotePlayerList.Count > 0)
-        {
-            Trade newTrade = new Trade(inventory[i], this, remotePlayerList.ToArray());
-            currentTrade = newTrade;
-            CmdTrade(gameObject.name, currentTrade.item.name, currentTrade.item.value);
-        }
-        else
-        {
-            print("No frendz to trad hary with");
-        }
 
-    }
     public void AcceptTrade() { 
 
     }
@@ -79,17 +55,24 @@ public class Inventory : NetworkBehaviour {
     {
 
     }
-    [Command]
-    public void CmdTrade(string PlayerID, string name, int value){
-        foreach(KeyValuePair<string, Inventory> n in currentTrade.receivers)
-        {
-            n.Value.RpcReceiveTrade();
-        }
+
+    
+    public void Trade(int i)
+    {
+        ItemManager.instance.CmdTrade(0, gameObject.name);
     }
+
+    public Item IDToItem(int id)
+    {
+        return ItemManager.instance.database[id];
+    }
+
     [ClientRpc]
-    public void RpcReceiveTrade(){
-        Debug.Log("Ohboi waddup its hary");
+    public void RpcReceiveTrade(string sender, int itemID)
+    {
+        Debug.Log("Hello! iz me " + gameObject.name + "! An i gots a trade frem my fren: " + sender + ", and he wan to gifes me: " + IDToItem(itemID).name);
     }
+
     public void Refresh(int i){
         for(;i < inventoryListings.Count; i++){
             inventoryListings[i].Renumber(this, i);
