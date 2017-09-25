@@ -21,13 +21,15 @@ public class Inventory : NetworkBehaviour {
     public float tradeRadius;
     TradePopup popup;
     Trade currentTrade;
+    int currentTradeID;
+
+    public bool isTrading = false;
 
     public Inventory() { }
 
     private void Start(){
         if (isLocalPlayer)
         {
-            Debug.Log("Yes i am local " + gameObject.name);
             canvas = Instantiate(newCanvas);
             content = canvas.transform.GetChild(0);
             tradePopup = Instantiate(newTradePopup, canvas.transform);
@@ -56,6 +58,13 @@ public class Inventory : NetworkBehaviour {
         inventoryListings.Add(n);
         //Add item in UI
     }
+
+    [TargetRpc]
+    public void TargetAdd(NetworkConnection conn, Item item)
+    {
+        Add(item);
+    }
+
     public void Drop(int i){
         inventory.RemoveAt(i);
         int n = inventoryListings[i].listIndex;
@@ -67,34 +76,69 @@ public class Inventory : NetworkBehaviour {
     }
 
     [TargetRpc]
+    public void TargetDrop(NetworkConnection conn, byte[] _trade)
+    {
+        Trade trade = Trade.DeserializeFromNetwork(_trade);
+        Drop(trade.itemI);
+    }
+
+    public void AcceptTrade()
+    {
+        if (isTrading)
+        {
+            tradePopup.SetActive(false);
+            isTrading = false;
+            CmdAcceptTrade(currentTradeID, gameObject.name);
+        }
+    }
+
+    [Command]
+    public void CmdAcceptTrade(int tradeID, string playerID)
+    {
+        ItemManager.instance.TradeAccepted(tradeID, playerID);
+    }
+
+    [Command]
+    public void CmdDeclineTrade(int tradeID, string playerID)
+    {
+        ItemManager.instance.TradeDeclined(tradeID, playerID);
+    }
+
+    public void DeclineTrade()
+    {
+        tradePopup.SetActive(false);
+        isTrading = false;
+        CmdDeclineTrade(currentTradeID, gameObject.name);
+    }
+
+    [TargetRpc]
+    public void TargetCloseTrade(NetworkConnection conn)
+    {
+        tradePopup.SetActive(false);
+        isTrading = false;
+    }
+
+    [TargetRpc]
     public void TargetAcceptTrade(NetworkConnection conn, Item item)
     {
         Add(item);
         tradePopup.SetActive(false);
     }
 
-    public void DeclineTrade()
-    {
-        tradePopup.SetActive(false);
-    }
-
     public void SetupTrade(int i)
     {
-        Debug.Log("Looking for tradey friendz");
         Collider[] n = Physics.OverlapSphere(transform.position, 1000);
         List<string> remotePlayerList = new List<string>();
-        Debug.Log(n.Length + " is my amount of maybe frendz");
         foreach (Collider nn in n)
         {
             if (nn.transform.root.tag == "Player" && nn.transform.root != transform)
             {
-                Debug.Log("Added frend : " + nn.transform.root.name);
                 remotePlayerList.Add(nn.transform.root.name);
             }
         }
         if (remotePlayerList.Count > 0)
         {
-            Trade newTrade = new Trade(inventory[i], gameObject.name, remotePlayerList.ToArray());
+            Trade newTrade = new Trade(inventory[i], gameObject.name, remotePlayerList.ToArray(), i);
             CmdSetupTrade(newTrade.SerializeForNetwork());
         }
         else
@@ -156,8 +200,11 @@ public class Inventory : NetworkBehaviour {
     public void TargetRecieveTrade(NetworkConnection conn, byte[] serIncomingTrade, int tradeID)
     {
         Trade trade = Trade.DeserializeFromNetwork(serIncomingTrade);
+        currentTradeID = tradeID;
+        Debug.Log("Hello am nem eh jeff jk is is: " + gameObject.name + " en i gotz ze trade wit id: " + tradeID.ToString());
         if (trade.seller != gameObject.name)
         {
+            isTrading = true;
             OpenPopup(trade);
             Debug.Log("Hello! iz me " + gameObject.name + "! An i gots a trade frem my fren: " + trade.seller + ", and he wan to gifes me: " + trade.item.name + " with a value of: " + trade.item.value);
         }
@@ -165,10 +212,8 @@ public class Inventory : NetworkBehaviour {
 
     void OpenPopup(Trade trade)
     {
-        Debug.Log("Dikke linker bil");
         tradePopup.SetActive(true);
-        popup.SetupUI(gameObject.name, trade.item);
-        Debug.Log("I OPEN POPOP");
+        popup.SetupUI(trade.seller, trade.item);
     }
 
     public void Refresh(int i){

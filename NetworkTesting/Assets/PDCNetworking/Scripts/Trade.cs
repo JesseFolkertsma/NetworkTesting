@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -11,6 +12,7 @@ public class Trade {
     public string seller;
     //public SerializableDictionary<string, Inventory> receivers;
     public List<string> receivers;
+    public int itemI;
 
     public Trade()
     {
@@ -19,7 +21,7 @@ public class Trade {
         receivers = new List<string>();
     }
 
-    public Trade(Item _item, string _sellerID, string[] _receiversID){
+    public Trade(Item _item, string _sellerID, string[] _receiversID, int ii){
         item = _item;
         seller = _sellerID;
         receivers = new List<string>();
@@ -28,6 +30,7 @@ public class Trade {
             Debug.Log("___________ADDING NEW PLAYER TO TRADE " + i);
             receivers.Add(i);
         }
+        itemI = ii;
     }
 
     public void Accept(string playerID){
