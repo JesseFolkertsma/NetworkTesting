@@ -41,12 +41,29 @@ public class PlayerInteraction : NetworkBehaviour {
         {
             if (hit.transform.tag == "Button")
             {
-                Debug.Log("hit bytton");
-                hit.transform.GetComponent<AuthorityHandler>().SetAuth(GetComponent<NetworkIdentity>(), hit.transform.GetComponent<NetworkIdentity>());
-                Debug.Log("hit autsetter");
+                CmdGetObjectAuth(hit.transform.GetComponent<NetworkIdentity>());
                 hit.transform.GetComponent<SpawnButton>().CmdSpawn();
-                Debug.Log("hit spawn");
             }
+        }
+    }
+
+    [Command]
+    public void CmdGetObjectAuth(NetworkIdentity objectID)
+    {
+        var otherOwner = objectID.clientAuthorityOwner;
+        NetworkIdentity myID = GetComponent<NetworkIdentity>();
+
+        if (otherOwner == myID.connectionToClient)
+        {
+            return;
+        }
+        else
+        {
+            if (otherOwner != null)
+            {
+                objectID.RemoveClientAuthority(otherOwner);
+            }
+            objectID.AssignClientAuthority(myID.connectionToClient);
         }
     }
 
