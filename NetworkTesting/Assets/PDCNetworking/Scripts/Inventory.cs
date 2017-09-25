@@ -9,19 +9,34 @@ public class Inventory : NetworkBehaviour {
     public List<iLHelper> inventoryListings = new List<iLHelper>();
 
     public GameObject canvas;
+    public GameObject tradePopup;
     public Transform content;
 
     public GameObject iL;
     public GameObject newCanvas;
+    public GameObject newTradePopup;
 
     bool invActive = false;
 
     public float tradeRadius;
+    TradePopup popup;
     Trade currentTrade;
 
-    private void Awake(){
-        canvas = Instantiate(newCanvas);
-        content = canvas.transform.GetChild(0);
+    public Inventory() { }
+
+    private void Start(){
+        if (isLocalPlayer)
+        {
+            Debug.Log("Yes i am local " + gameObject.name);
+            canvas = Instantiate(newCanvas);
+            content = canvas.transform.GetChild(0);
+            tradePopup = Instantiate(newTradePopup, canvas.transform);
+            popup = tradePopup.GetComponent<TradePopup>();
+            popup.Setup(this);
+            tradePopup.SetActive(false);
+            if (tradePopup == null)
+                Debug.Log("WAT DE FUCK VUILE TEEFUS MENGOL");
+        }
     }
 
     private void Update()
@@ -51,33 +66,35 @@ public class Inventory : NetworkBehaviour {
 
     }
 
-    public void AcceptTrade()
-    { 
-
+    [TargetRpc]
+    public void TargetAcceptTrade(NetworkConnection conn, Item item)
+    {
+        Add(item);
+        tradePopup.SetActive(false);
     }
 
     public void DeclineTrade()
     {
-
+        tradePopup.SetActive(false);
     }
 
     public void SetupTrade(int i)
     {
         Debug.Log("Looking for tradey friendz");
         Collider[] n = Physics.OverlapSphere(transform.position, 1000);
-        List<Inventory> remotePlayerList = new List<Inventory>();
+        List<string> remotePlayerList = new List<string>();
         Debug.Log(n.Length + " is my amount of maybe frendz");
         foreach (Collider nn in n)
         {
             if (nn.transform.root.tag == "Player" && nn.transform.root != transform)
             {
                 Debug.Log("Added frend : " + nn.transform.root.name);
-                remotePlayerList.Add(nn.transform.root.GetComponent<Inventory>());
+                remotePlayerList.Add(nn.transform.root.name);
             }
         }
         if (remotePlayerList.Count > 0)
         {
-            Trade newTrade = new Trade(inventory[i], this, remotePlayerList.ToArray());
+            Trade newTrade = new Trade(inventory[i], gameObject.name, remotePlayerList.ToArray());
             CmdSetupTrade(newTrade.SerializeForNetwork());
         }
         else
@@ -130,14 +147,28 @@ public class Inventory : NetworkBehaviour {
     public void RpcEasyRecieve(string sender, Item itemToTrade)
     {
         Debug.Log("Hello! iz me " + gameObject.name + "! An i gots a trade frem my fren: " + sender + ", and he wan to gifes me: " + itemToTrade.name + " wit value: " + itemToTrade.value.ToString());
+        tradePopup.SetActive(true);
+        popup.SetupUI(gameObject.name, itemToTrade);
     }
     #endregion
 
-    [ClientRpc]
-    public void RpcReceiveTrade(byte[] serIncomingTrade, int tradeID)
+    [TargetRpc]
+    public void TargetRecieveTrade(NetworkConnection conn, byte[] serIncomingTrade, int tradeID)
     {
         Trade trade = Trade.DeserializeFromNetwork(serIncomingTrade);
-        Debug.Log("Hello! iz me " + gameObject.name + "! An i gots a trade frem my fren: " + trade.seller + ", and he wan to gifes me: " + trade.item.name);
+        if (trade.seller != gameObject.name)
+        {
+            OpenPopup(trade);
+            Debug.Log("Hello! iz me " + gameObject.name + "! An i gots a trade frem my fren: " + trade.seller + ", and he wan to gifes me: " + trade.item.name + " with a value of: " + trade.item.value);
+        }
+    }
+
+    void OpenPopup(Trade trade)
+    {
+        Debug.Log("Dikke linker bil");
+        tradePopup.SetActive(true);
+        popup.SetupUI(gameObject.name, trade.item);
+        Debug.Log("I OPEN POPOP");
     }
 
     public void Refresh(int i){

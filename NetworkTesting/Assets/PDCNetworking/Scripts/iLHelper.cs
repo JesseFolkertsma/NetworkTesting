@@ -34,7 +34,7 @@ public class iLHelper : MonoBehaviour
         name.text = item.name;
         value.text = item.value.ToString();
         drop.onClick.AddListener(() => inv.Drop(index));
-        trade.onClick.AddListener(() => inv.EasyTrade(index));
+        trade.onClick.AddListener(() => inv.SetupTrade(index));
         valueField.onEndEdit.AddListener(delegate { inv.ChangeValue(index); });
     }
     public void Renumber(Inventory inv, int i)

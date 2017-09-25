@@ -8,32 +8,35 @@ using System.Runtime.Serialization.Formatters.Binary;
 [System.Serializable]
 public class Trade {
     public Item item;
-    public Inventory seller;
-    public Dictionary<string, Inventory> receivers;
+    public string seller;
+    //public SerializableDictionary<string, Inventory> receivers;
+    public List<string> receivers;
 
     public Trade()
     {
         item = null;
         seller = null;
-        receivers = new Dictionary<string, Inventory>();
+        receivers = new List<string>();
     }
 
-    public Trade(Item _item, Inventory _seller, Inventory[] _receivers){
+    public Trade(Item _item, string _sellerID, string[] _receiversID){
         item = _item;
-        seller = _seller;
-        receivers = new Dictionary<string, Inventory>();
-        foreach(Inventory i in _receivers)
+        seller = _sellerID;
+        receivers = new List<string>();
+        foreach(string i in _receiversID)
         {
-            receivers.Add(i.gameObject.name, i);
+            Debug.Log("___________ADDING NEW PLAYER TO TRADE " + i);
+            receivers.Add(i);
         }
     }
 
     public void Accept(string playerID){
-        receivers[playerID].Add(item);
+        //receivers[playerID].Add(item);
+        ItemManager.instance.GiveItemToPlayerID(playerID, item);
         receivers.Remove(playerID);
-        foreach(KeyValuePair<string, Inventory> i in receivers)
+        foreach(string i in receivers)
         {
-            i.Value.DeclineTrade();
+            //i.Value.DeclineTrade();
         }
     }
 
