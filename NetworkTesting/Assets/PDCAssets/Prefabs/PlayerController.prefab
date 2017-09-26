@@ -143,6 +143,7 @@ GameObject:
   - component: {fileID: 124112171864783476}
   - component: {fileID: 92667667954400026}
   - component: {fileID: 81333990134087694}
+  - component: {fileID: 114386914413780722}
   m_Layer: 9
   m_Name: PlayerCamera
   m_TagString: Player
@@ -538,6 +539,18 @@ MonoBehaviour:
     i15: 233
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
+--- !u!114 &114386914413780722
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1625098297174926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profile: {fileID: 11400000, guid: 19fcb97ea8864b443b8c162893b62e55, type: 2}
 --- !u!114 &114454382125572154
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -602,6 +615,7 @@ MonoBehaviour:
   newTradePopup: {fileID: 1401699080962016, guid: 318c6ab3adcff764cb1cb13fc2c4d824,
     type: 2}
   tradeRadius: 9999
+  isTrading: 0
 --- !u!114 &114539081937160478
 MonoBehaviour:
   m_ObjectHideFlags: 1
